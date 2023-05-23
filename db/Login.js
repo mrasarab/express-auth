@@ -1,15 +1,11 @@
-require("dotenv").config();
+const dotenv = require("dotenv");
+dotenv.config();
+const jwt = require("jsonwebtoken");
+const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 
+const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 var mysql = require("mysql");
 const crypto = require("crypto");
-const { HOST, USER, PASSWORD, DATABASE } = process.env;
-
-// var conn = mysql.createConnection({
-//   host: HOST,
-//   user: USER,
-//   password: PASSWORD,
-//   database: DATABASE,
-// });
 
 var conn = mysql.createConnection({
   host: "localhost",
@@ -49,10 +45,18 @@ const UserAuth = (req, res) => {
     if (result[0].password !== hashed_password) {
       return res.status(400).json({ message: "Incorrect password!" });
     }
-
-    return res.status(200).json({ message: `Welcome, user: ${email}!` });
+    const email = req.body.email;
+    const payload = { user: email };
+    const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, {
+      expiresIn: "30s",
+    });
+    res.cookie("accessToken", accessToken, { httpOnly: true, maxAge: 60000 });
+    return res
+      .status(200)
+      .json({
+        message: `Welcome, user: ${email}! and your token is : ${accessToken}`,
+      });
   });
 };
 
 module.exports = UserAuth;
-

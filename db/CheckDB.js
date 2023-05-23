@@ -1,19 +1,4 @@
 var mysql = require("mysql");
-require("dotenv").config();
-const crypto = require("crypto");
-
-
-const HOST = process.env.HOST;
-const USER = process.env.USER;
-const PASSWORD = process.env.PASSWORD;
-const DATABASE = process.env.DATABASE;
-
-// var conn = mysql.createConnection({
-//   host: HOST,
-//   user: USER,
-//   password: PASSWORD,
-//   database: DATABASE,
-// });
 
 var conn = mysql.createConnection({
   host: "localhost",
@@ -21,9 +6,6 @@ var conn = mysql.createConnection({
   password: "05121",
   database: "users",
 });
-
-
-
 
 const check_DB = {
   connect: async () => {

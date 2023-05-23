@@ -1,15 +1,5 @@
-require("dotenv").config();
-
 var mysql = require("mysql");
 const crypto = require("crypto");
-const { HOST, USER, PASSWORD, DATABASE } = process.env;
-
-// var conn = mysql.createConnection({
-//   host: HOST,
-//   user: USER,
-//   password: PASSWORD,
-//   database: DATABASE,
-// });
 
 var conn = mysql.createConnection({
   host: "localhost",
@@ -64,4 +54,3 @@ const UserDelete = (req, res) => {
 };
 
 module.exports = UserDelete;
-
